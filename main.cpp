@@ -33,10 +33,10 @@ int main(){
     f>>nr_fin;
     int finale[nr_stari+1];
     for(int i=1;i<=nr_stari;i++) finale[i]=0;
-    for(int i=1;i<=nr_fin;i++){
-        int x;
-        f>>x;
-        finale[x]=1;
+   	 for(int i=1;i<=nr_fin;i++){
+      		  int x;
+		  f>>x;
+        	  finale[x]=1;
 
     }
     int color[nr_stari+1];
