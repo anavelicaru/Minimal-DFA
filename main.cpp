@@ -1,8 +1,8 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-ifstream f("date.in");
-ofstream g("date.out");
+ifstream f("files.in");
+ofstream g("files.out");
 
 map <char,int> L; // bijectie intre alfabet si numarul de litere
 char alphabet[100];
