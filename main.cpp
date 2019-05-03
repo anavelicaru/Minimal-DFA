@@ -8,6 +8,7 @@ map <char,int> L; // bijectie intre alfabet si numarul de litere
 char alphabet[100];
 int nStari,nLitere;
 
+void parcurgere (int *viz, int stare, int *automat, int nLit, int &nFin);
 set <int> operator* (set <int> M1, set <int> M2){
     set <int> intersect;
     set <int> :: iterator i,j;
@@ -18,7 +19,6 @@ set <int> operator* (set <int> M1, set <int> M2){
     return intersect;
 }
 
-void parcurgere (int *viz, int stare, int *automat, int nLit, int &nFin);
 int main(){
     f >> nStari >> nLitere;
     set <int> fin,nefin;
@@ -107,48 +107,57 @@ int main(){
 
 }
 //ramane sa eliminam nodurile inutile
-    int nr_stari2 = P.size();
-    int  auto_min[nr_stari2+1][nLitere];
-    int finale2[nr_stari2+1];
-    for(int i=1;i<=nr_stari2;i++)finale2[i]=0;
-   int stare=0,nFinale=0;
-    for(set< set<int> >::iterator it=P.begin();it!=P.end();it++)
-    {
-        ++stare;
-        if(finale[*(it->begin())])
+    int nStari2 = P.size();
+    int minimal[nStari2+1][nLitere];
+    int finale2[nStari2+1];
+
+    for(int i=1;i<=nStari2;i++)
+        finale2[i]=0;
+    int stare=0,nFinale=0;
+    for(set< set<int> >::iterator it=P.begin();it!=P.end();it++){
+        stare++;
+        if (finale[*(it->begin())])
          finale2[stare]=1;
         for(int x=0;x<nLitere;x++)
-            auto_min[stare][x]=color[automat[*(it->begin())][x]];
+            minimal[stare][x]=color[automat[*(it->begin())][x]];
     }
 
-    int viz[nr_stari2+1];
-    for(int i=1;i<=nr_stari2;i++) viz[i]=0;
-    int nr_stari3=0;
-    int start_min=color[start];
-    parcurgere(viz,start_min,(int*)auto_min,nLitere,nr_stari3);
-    if(!viz[start_min]) {viz[start_min]=1; ++nr_stari3;}
-    g<<nr_stari3<<endl;
-    for(int i=1;i<=nr_stari2;i++)
+    int viz[nStari2+1];
+    for(int i=1;i<=nStari2;i++)
+        viz[i]=0;
+
+    int nStari3=0;
+    int start_min = color[start];
+
+    parcurgere(viz,start_min,(int*)minimal,nLitere,nStari3);
+
+    if(!viz[start_min]){
+            viz[start_min]=1;
+            nStari3++;}
+    g<<nStari3<<endl;
+    for(int i=1;i<=nStari2;i++)
         if(viz[i])
             g<<i<<' ';
     g<<endl<<nLitere<<endl;
     for(int i=0;i<nLitere;i++)
         g<<alphabet[i]<<' ';
+
     g<<endl;
     g<<start_min<<endl;
-    for(int i=1;i<=nr_stari2;i++)
+
+    for(int i=1;i<=nStari2;i++)
         if(viz[i]&&finale2[i])
         ++nFinale;
     g<<nFinale<<endl;
-    for(int i=1;i<=nr_stari2;i++)
+    for(int i=1;i<=nStari2;i++)
         if(finale2[i]&&viz[i])
         g<<i<<' ';
     g<<endl;
-    g<<nr_stari3*nLitere<<endl;
-    for(int i=1;i<=nr_stari2;i++)
+    g<<nStari3*nLitere<<endl;
+    for(int i=1;i<=nStari2;i++)
         for(int x=0;x<nLitere;x++)
         if(viz[i])
-        g<<i<<' '<<alphabet[x]<<' '<<auto_min[i][x]<<endl;
+        g<<i<<' '<<alphabet[x]<<' '<<minimal[i][x]<<endl;
 
     return 0;
 }
